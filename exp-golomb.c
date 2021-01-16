@@ -22,7 +22,9 @@ int decode(int, FILE*, int);
 int main(int argc, char *argv[])
 {
     if (argc < 3) {
-        puts("argument not enough");
+        puts("Usage:\n"
+             "encode [input file] [output file] [order-k]\n"
+             "decode [input file] [output file] [order-k]");
         return 0;
     }
     
@@ -55,12 +57,16 @@ int main(int argc, char *argv[])
         }
     }
 
+    int status;
     if (strcmp(basename(argv[0]), "encode") == 0) {
-        encode(in_fd, out_file, order);
+        status = encode(in_fd, out_file, order);
     } else {
-        decode(in_fd, out_file, order);
+        status = decode(in_fd, out_file, order);
     }
     fclose(out_file);
+    if (status == FAIL) {
+        remove(argv[2]);
+    }
     return 0;
 }
 
