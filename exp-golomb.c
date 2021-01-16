@@ -5,10 +5,11 @@
 #include <libgen.h>    //basename
 
 #include <fcntl.h>     //open
+#include <unistd.h>    //close
 #include <sys/mman.h>  //mmap
 #include <sys/stat.h>
 
-#define MAX_ORDER 7    // must be smaller than 24 
+#define MAX_ORDER 32    // must be smaller than 24 
 #define BUFFER_SIZE 100
 #define WRITE_SIZE (BUFFER_SIZE - 2)
 
@@ -64,6 +65,7 @@ int main(int argc, char *argv[])
         status = decode(in_fd, out_file, order);
     }
     fclose(out_file);
+    close(in_fd);
     if (status == FAIL) {
         remove(argv[2]);
     }
